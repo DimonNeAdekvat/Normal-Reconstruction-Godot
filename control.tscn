@@ -1,0 +1,349 @@
+[gd_scene load_steps=10 format=3 uid="uid://gp4b00dmnau7"]
+
+[ext_resource type="Script" path="res://control.gd" id="1_2rfat"]
+[ext_resource type="PackedScene" uid="uid://c7x68h83uqh68" path="res://main.tscn" id="1_nbnv0"]
+[ext_resource type="Shader" path="res://Shaders/scaling.gdshader" id="1_rb606"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://joystick/virtual_joystick.tscn" id="3_vo3iy"]
+[ext_resource type="PackedScene" uid="uid://d1h0qevbf817j" path="res://Helpers/shader_slider.tscn" id="4_ygs5b"]
+[ext_resource type="Theme" uid="uid://cbtcjvfb7uqm8" path="res://theme.tres" id="5_ayfld"]
+[ext_resource type="Texture2D" uid="uid://b4ejkw1r33q8k" path="res://Assets/menu.svg" id="7_vx61q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dobxj"]
+shader = ExtResource("1_rb606")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_noi6w"]
+viewport_path = NodePath("Display/Viewport")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2rfat")
+
+[node name="Display" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_dobxj")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.0
+anchor_bottom = 2.0
+scale = Vector2(0.5, 0.5)
+texture = SubResource("ViewportTexture_noi6w")
+
+[node name="Viewport" type="SubViewport" parent="Display"]
+handle_input_locally = false
+size = Vector2i(240, 135)
+
+[node name="Main" parent="Display/Viewport" instance=ExtResource("1_nbnv0")]
+unique_name_in_owner = true
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("3_vo3iy")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -240.0
+offset_top = -240.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 0
+joystick_mode = 1
+visibility_mode = 1
+action_left = "move_l"
+action_right = "move_r"
+action_up = "move_u"
+action_down = "move_d"
+
+[node name="ShaderSlider" parent="." instance=ExtResource("4_ygs5b")]
+layout_mode = 1
+
+[node name="Margins" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ayfld")
+
+[node name="ShaderOptionL" type="TabContainer" parent="Margins"]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 250.0
+offset_bottom = 62.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tab_alignment = 1
+
+[node name="Normals" type="OptionButton" parent="Margins/ShaderOptionL"]
+layout_mode = 2
+alignment = 1
+item_count = 8
+selected = 1
+popup/item_0/text = "No shader"
+popup/item_0/id = 0
+popup/item_1/text = "True normals"
+popup/item_1/id = 1
+popup/item_2/text = "Reconstruction methods"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Simple 3 Tap"
+popup/item_3/id = 3
+popup/item_4/text = "Simple 4 Tap"
+popup/item_4/id = 4
+popup/item_5/text = "Improved 5 Tap"
+popup/item_5/id = 5
+popup/item_6/text = "Accurate 9 Tap"
+popup/item_6/id = 6
+popup/item_7/text = "Accurate 9 Tap+"
+popup/item_7/id = 7
+
+[node name="Highlights" type="OptionButton" parent="Margins/ShaderOptionL"]
+visible = false
+layout_mode = 2
+alignment = 1
+item_count = 8
+selected = 1
+popup/item_0/text = "No shader"
+popup/item_0/id = 0
+popup/item_1/text = "True normals"
+popup/item_1/id = 1
+popup/item_2/text = "Reconstruction methods"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Simple 3 Tap"
+popup/item_3/id = 3
+popup/item_4/text = "Simple 4 Tap"
+popup/item_4/id = 4
+popup/item_5/text = "Improved 5 Tap"
+popup/item_5/id = 5
+popup/item_6/text = "Accurate 9 Tap"
+popup/item_6/id = 6
+popup/item_7/text = "Accurate 9 Tap+"
+popup/item_7/id = 7
+
+[node name="ShaderOptionR" type="TabContainer" parent="Margins"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_bottom = 62.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tab_alignment = 1
+
+[node name="Normals" type="OptionButton" parent="Margins/ShaderOptionR"]
+layout_mode = 2
+alignment = 1
+item_count = 8
+selected = 3
+popup/item_0/text = "No shader"
+popup/item_0/id = 0
+popup/item_1/text = "True normals"
+popup/item_1/id = 1
+popup/item_2/text = "Reconstruction methods"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Simple 3 Tap"
+popup/item_3/id = 3
+popup/item_4/text = "Simple 4 Tap"
+popup/item_4/id = 4
+popup/item_5/text = "Improved 5 Tap"
+popup/item_5/id = 5
+popup/item_6/text = "Accurate 9 Tap"
+popup/item_6/id = 6
+popup/item_7/text = "Accurate 9 Tap+"
+popup/item_7/id = 7
+
+[node name="Highlights" type="OptionButton" parent="Margins/ShaderOptionR"]
+visible = false
+layout_mode = 2
+alignment = 1
+item_count = 8
+selected = 7
+popup/item_0/text = "No shader"
+popup/item_0/id = 0
+popup/item_1/text = "True normals"
+popup/item_1/id = 1
+popup/item_2/text = "Reconstruction methods"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Simple 3 Tap"
+popup/item_3/id = 3
+popup/item_4/text = "Simple 4 Tap"
+popup/item_4/id = 4
+popup/item_5/text = "Improved 5 Tap"
+popup/item_5/id = 5
+popup/item_6/text = "Accurate 9 Tap"
+popup/item_6/id = 6
+popup/item_7/text = "Accurate 9 Tap+"
+popup/item_7/id = 7
+
+[node name="MenuButton" type="Button" parent="Margins"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+icon = ExtResource("7_vx61q")
+
+[node name="Settings" type="PanelContainer" parent="Margins"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -40.0
+offset_right = 100.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margins/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Resolution"
+horizontal_alignment = 1
+
+[node name="Resolution" type="OptionButton" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+item_count = 4
+selected = 0
+popup/item_0/text = " 240 x 135 "
+popup/item_0/id = 0
+popup/item_1/text = " 480 x 270 "
+popup/item_1/id = 1
+popup/item_2/text = " 960 x 540 "
+popup/item_2/id = 2
+popup/item_3/text = " 1920 x 1080 "
+popup/item_3/id = 3
+
+[node name="LabelColorS" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Shadows color"
+horizontal_alignment = 1
+
+[node name="ColorS" type="ColorPickerButton" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = " "
+edit_alpha = false
+
+[node name="LabelIntenS" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Shadows intensity"
+horizontal_alignment = 1
+
+[node name="SliderS" type="HSlider" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.4
+
+[node name="LabelColorH" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Highlights color"
+horizontal_alignment = 1
+
+[node name="ColorH" type="ColorPickerButton" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = " "
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="LabelIntenH" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Highlights intensity"
+horizontal_alignment = 1
+
+[node name="SliderH" type="HSlider" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.1
+
+[node name="FixVoid" type="CheckBox" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Increase highlight intensity to see the effect"
+text = "Fix empty normals"
+
+[node name="Projection" type="Label" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Projection
+"
+horizontal_alignment = 1
+
+[node name="CameraProj" type="OptionButton" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+item_count = 2
+selected = 0
+popup/item_0/text = "Orthographic"
+popup/item_0/id = 0
+popup/item_1/text = "Perspective"
+popup/item_1/id = 1
+
+[node name="RSCamera" type="Button" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Reset camera"
+
+[node name="HSeparator" type="HSeparator" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+
+[node name="Exit" type="Button" parent="Margins/Settings/VBoxContainer"]
+layout_mode = 2
+text = "Exit
+"
+
+[node name="WarningCompat" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -40.0
+offset_right = 225.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("5_ayfld")
+
+[node name="Label" type="Label" parent="WarningCompat"]
+layout_mode = 2
+text = "True normals cannot be used in compatibility mode"
+horizontal_alignment = 1
+
+[connection signal="split_moved" from="ShaderSlider" to="." method="_on_shader_split_moved"]
+[connection signal="tab_changed" from="Margins/ShaderOptionL" to="." method="_on_L_changed"]
+[connection signal="item_selected" from="Margins/ShaderOptionL/Normals" to="." method="_on_L_changed"]
+[connection signal="item_selected" from="Margins/ShaderOptionL/Highlights" to="." method="_on_L_changed"]
+[connection signal="tab_changed" from="Margins/ShaderOptionR" to="." method="_on_R_changed"]
+[connection signal="item_selected" from="Margins/ShaderOptionR/Normals" to="." method="_on_R_changed"]
+[connection signal="item_selected" from="Margins/ShaderOptionR/Highlights" to="." method="_on_R_changed"]
+[connection signal="pressed" from="Margins/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="item_selected" from="Margins/Settings/VBoxContainer/Resolution" to="." method="_on_resolution_changed"]
+[connection signal="color_changed" from="Margins/Settings/VBoxContainer/ColorS" to="." method="_on_color_shadows_changed"]
+[connection signal="value_changed" from="Margins/Settings/VBoxContainer/SliderS" to="." method="_on_shadow_value_changed"]
+[connection signal="color_changed" from="Margins/Settings/VBoxContainer/ColorH" to="." method="_on_color_highlights_changed"]
+[connection signal="value_changed" from="Margins/Settings/VBoxContainer/SliderH" to="." method="_on_highlight_value_changed"]
+[connection signal="toggled" from="Margins/Settings/VBoxContainer/FixVoid" to="." method="_on_fix_void_toggled"]
+[connection signal="item_selected" from="Margins/Settings/VBoxContainer/CameraProj" to="." method="_on_camera_proj_changed"]
+[connection signal="pressed" from="Margins/Settings/VBoxContainer/RSCamera" to="." method="_on_rs_camera_pressed"]
+[connection signal="pressed" from="Margins/Settings/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

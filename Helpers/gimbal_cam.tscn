@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5hw7fqxyeqn"]
+
+[ext_resource type="Script" path="res://Helpers/GimbalCam.gd" id="1_u651g"]
+
+[node name="GimbalCam" type="Node3D"]
+script = ExtResource("1_u651g")
+
+[node name="Joint1" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Joint2" type="Node3D" parent="Joint1"]
+unique_name_in_owner = true
+
+[node name="Camera" type="Camera3D" parent="Joint1/Joint2"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+projection = 1
+size = 5.0
+near = 0.1
+far = 100.0

@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://1kybo0l5oek"]
+
+[ext_resource type="Texture2D" uid="uid://cvam1gg38458p" path="res://Assets/3col-checkerboard.png" id="1_t8utf"]
+
+[resource]
+albedo_color = Color(1, 0.678431, 0.380392, 1)
+albedo_texture = ExtResource("1_t8utf")
+uv1_scale = Vector3(3, 2, 2)
+texture_filter = 2

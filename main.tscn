@@ -1,0 +1,203 @@
+[gd_scene load_steps=25 format=3 uid="uid://c7x68h83uqh68"]
+
+[ext_resource type="PackedScene" uid="uid://c5hw7fqxyeqn" path="res://Helpers/gimbal_cam.tscn" id="1_b2g5d"]
+[ext_resource type="Texture2D" uid="uid://j4snne0yvrfs" path="res://Assets/Checkerboard.png" id="1_flcgx"]
+[ext_resource type="Material" uid="uid://r8osjkc4ilnm" path="res://checkerboard.tres" id="1_p518o"]
+[ext_resource type="Material" uid="uid://fvpvosihlvy4" path="res://pylon_mat.tres" id="2_6h5t5"]
+[ext_resource type="Material" uid="uid://1kybo0l5oek" path="res://cubes.tres" id="4_v314y"]
+[ext_resource type="Material" uid="uid://ddee0eo7omtnc" path="res://cubes2.tres" id="5_eyie3"]
+[ext_resource type="Script" path="res://Helpers/ShaderControls.gd" id="6_cl1tb"]
+[ext_resource type="Shader" path="res://Shaders/Normals_True.gdshader" id="8_51nrg"]
+[ext_resource type="Shader" path="res://Shaders/Normals_3tap.gdshader" id="9_wk7gn"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qe5en"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_s5rj8"]
+sky_material = SubResource("ProceduralSkyMaterial_qe5en")
+
+[sub_resource type="Environment" id="Environment_uw2dx"]
+background_mode = 2
+sky = SubResource("Sky_s5rj8")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ak7r"]
+material = ExtResource("1_p518o")
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yhqsr"]
+material = ExtResource("2_6h5t5")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 1.6
+radial_segments = 16
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xu388"]
+height = 0.2
+radial_segments = 6
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xkfq7"]
+albedo_color = Color(0, 1, 1, 1)
+albedo_texture = ExtResource("1_flcgx")
+uv1_scale = Vector3(2, 2, 2)
+texture_filter = 2
+
+[sub_resource type="TorusMesh" id="TorusMesh_h67he"]
+material = SubResource("StandardMaterial3D_xkfq7")
+inner_radius = 0.3
+outer_radius = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_774dm"]
+material = ExtResource("4_v314y")
+size = Vector3(0.75, 0.75, 0.75)
+
+[sub_resource type="Animation" id="Animation_62w5n"]
+resource_name = "Start"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CubeL")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.5, 0.375, 2.5, 2, 1, 0.5, 1.375, 2.5, 4, 1, 0.5, 0.375, 2.5)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CubeR")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -2.5, 1.375, -0.5, 2, 1, -2.5, 0.375, -0.5, 4, 1, -2.5, 1.375, -0.5)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Torus:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(6.28319, 6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qpgsl"]
+_data = {
+"Start": SubResource("Animation_62w5n")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uc8xu"]
+render_priority = 0
+shader = ExtResource("8_51nrg")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_jqplj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kq47w"]
+render_priority = 0
+shader = ExtResource("9_wk7gn")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_mr17k"]
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uw2dx")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_4ak7r")
+
+[node name="PylonL" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 3, 1, 3)
+mesh = SubResource("CylinderMesh_yhqsr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PylonL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PylonL"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="PylonR" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -3, 1, -3)
+mesh = SubResource("CylinderMesh_yhqsr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PylonR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PylonR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="PylonC" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 0.5, 0, -0.707107, 0, 0.707107, -2, 0.5, 2)
+mesh = SubResource("CylinderMesh_yhqsr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PylonC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PylonC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+material_override = ExtResource("2_6h5t5")
+mesh = SubResource("CylinderMesh_xu388")
+
+[node name="Torus" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.28742, 0.91739, -0.275293, 0, -0.28742, -0.957805, -0.957805, -0.275293, 0.0826105, -2, 1.5, 2)
+mesh = SubResource("TorusMesh_h67he")
+
+[node name="CubeL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.728105, 2.5)
+mesh = SubResource("BoxMesh_774dm")
+
+[node name="CubeL2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 0.375, 1)
+material_override = ExtResource("5_eyie3")
+mesh = SubResource("BoxMesh_774dm")
+
+[node name="CubeR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.02189, -0.5)
+mesh = SubResource("BoxMesh_774dm")
+
+[node name="CubeR2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.375, -2.25)
+material_override = ExtResource("5_eyie3")
+mesh = SubResource("BoxMesh_774dm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Start"
+libraries = {
+"": SubResource("AnimationLibrary_qpgsl")
+}
+
+[node name="GimbalCam" parent="." instance=ExtResource("1_b2g5d")]
+distance = 6.0
+angle_lr = 135.0
+angle_ud = 25.0
+
+[node name="ShaderControls" type="Node3D" parent="."]
+script = ExtResource("6_cl1tb")
+
+[node name="ShaderPlaneL" type="MeshInstance3D" parent="ShaderControls"]
+material_override = SubResource("ShaderMaterial_uc8xu")
+mesh = SubResource("ArrayMesh_jqplj")
+
+[node name="ShaderPlaneR" type="MeshInstance3D" parent="ShaderControls"]
+material_override = SubResource("ShaderMaterial_kq47w")
+mesh = SubResource("ArrayMesh_mr17k")
