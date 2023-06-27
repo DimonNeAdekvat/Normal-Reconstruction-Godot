@@ -36,6 +36,12 @@ func  _ready():
 	if compatibility:
 		$WarningCompat.show()
 	RenderingServer.global_shader_parameter_set("compatibility",compatibility)
+	
+	if OS.has_feature("web") :
+		%Settings/VBoxContainer/ESeparator.hide()
+		%Settings/VBoxContainer/Exit.hide()
+	
+	
 	_on_L_changed(0)
 	_on_R_changed(0)
 
