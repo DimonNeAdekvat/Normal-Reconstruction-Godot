@@ -134,8 +134,9 @@ func _on_camera_proj_changed(index):
 		%Main/GimbalCam.set_projection(Camera3D.PROJECTION_ORTHOGONAL)
 
 func _on_rs_camera_pressed():
-	%Main/GimbalCam.angle_lr = 135
-	%Main/GimbalCam.angle_ud = 30
+	%Main/GimbalCam.angle_lr = 135.0
+	%Main/GimbalCam.angle_ud = 30.0
+	%Main/GimbalCam.distance = 6.0
 
 func _on_exit_pressed():
 	get_tree().quit()
